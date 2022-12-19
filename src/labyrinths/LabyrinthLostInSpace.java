@@ -15,10 +15,11 @@ public class LabyrinthLostInSpace {
 		}
 	}
 	
-	public void setNewPosition(int[] newPosition, char direction) {
+	public void setNewPosition(int positionY, int positionX, char direction) {
 		labyrinth[position[0]][position[1]] = ' ';
-		labyrinth[newPosition[0]][newPosition[1]] = direction;
-		position = newPosition;
+		labyrinth[positionY][positionX] = direction;
+		position[0] = positionY;
+		position[1] = positionX;
 	}
 	
 	public int[] getPosition() {

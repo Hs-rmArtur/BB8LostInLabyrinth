@@ -4,30 +4,57 @@ import labyrinths.LabyrinthLostInSpace;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
 
 		LabyrinthLostInSpace LLostInSpace = new LabyrinthLostInSpace();
 
-		int[] newPosition = new int[2];
+		int newPosY = 0;
+		int newPosX = 0;
 
 		LLostInSpace.buildLabyrinth();
 
 		LLostInSpace.drawLabyrinth();
 
-		newPosition[0] = 15;
-		newPosition[1] = 1;
-		LLostInSpace.setNewPosition(newPosition, '>');
+		newPosY = 15;
+		newPosX = 1;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '>');
 		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
 
-		newPosition[0] = 15;
-		newPosition[1] = 2;
-		LLostInSpace.setNewPosition(newPosition, '>');
+		newPosY = 15;
+		newPosX = 2;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '>');
 		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
+
+		newPosY = 15;
+		newPosX = 3;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '^');
+		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
 		
-		newPosition[0] = 15;
-		newPosition[1] = 3;
-		LLostInSpace.setNewPosition(newPosition, '^');
+		newPosY = 14;
+		newPosX = 3;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '^');
+		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
+		
+		newPosY = 13;
+		newPosX = 3;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '^');
+		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
+		
+		newPosY = 12;
+		newPosX = 3;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '^');
+		LLostInSpace.drawLabyrinth();
+		Thread.sleep(1000);
+		
+		newPosY = 11;
+		newPosX = 3;
+		LLostInSpace.setNewPosition(newPosY, newPosX, '^');
 		LLostInSpace.drawLabyrinth();
 	}
 
