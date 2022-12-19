@@ -1,14 +1,14 @@
 public class Labyrinth {
 	public static void main (String[] args) {
-		
+
 		// Deklaration
 		char bb8 = '>'; 		// Anfangsposition von BB-8
 		char wand = '#'; 		// Wand
 		char weg = ' '; 		// Weg = null
 		char exit = 'E';		// E steht für Exit
-		
+
 		// Deklaration und Instanziierung von Labyrinth
-		char[][] labyrinth = 
+		char[][] labyrinth =
 			{
 					{wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand}, 	// 0 Zeile
 					{bb8,weg,weg,weg,weg,weg,wand,weg,weg,weg,weg,exit}, 			// 1 Zeile
@@ -22,7 +22,7 @@ public class Labyrinth {
 					{wand,weg,weg,weg,weg,weg,weg,weg,weg,weg,weg,wand},			// 9 Zeile
 					{wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand}	// 10 Zeile
 			};
-		
-		System.out.println(labyrinth[1][1]);
+
+		System.out.println(labyrinth[1][0]);
 	}
 }
