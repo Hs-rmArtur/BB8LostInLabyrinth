@@ -8,7 +8,7 @@ public class Labyrinth {
 		char exit = 'E';		// E steht für Exit
 		
 		// Deklaration und Instanziierung von Labyrinth
-		int[][] labyrinth = 
+		char[][] labyrinth = 
 			{
 					{wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand}, 	// 0 Zeile
 					{bb8,weg,weg,weg,weg,weg,wand,weg,weg,weg,weg,exit}, 			// 1 Zeile
@@ -23,6 +23,6 @@ public class Labyrinth {
 					{wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand}	// 10 Zeile
 			};
 		
-		System.out.println(labyrinth[1][0]);
+		System.out.println(labyrinth[1][1]);
 	}
 }
