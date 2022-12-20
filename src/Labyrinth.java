@@ -23,6 +23,11 @@ public class Labyrinth {
 					{wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand,wand}		// 10 Zeile
 			};
 		
-		System.out.println(labyrinth[1][0]);
+		for (int i = 0; i < labyrinth.length; i++) {
+			for (int j = 0; j < labyrinth[i].length; j++) {
+				System.out.print(labyrinth[i][j]);
+			}
+			System.out.println();
+		}
 	}
 }
