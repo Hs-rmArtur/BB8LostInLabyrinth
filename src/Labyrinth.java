@@ -10,52 +10,72 @@ public class Labyrinth {
 		final char SIGN_PATH = ' ';
 		final char SIGN_EXIT = 'E';
 
-		int startPositionX;
+		int startPositionRow;
+		int startPositionColumn;
+		
+		int exitPositionRow;
+		int exitPositionColumn;
 
 		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
 		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 
-		drawLabyrinth(labyrinthThree);
+		drawLabyrinth(labyrinthTwo);
 
-		startPositionX = determineStartPositionX(labyrinthThree, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+		// BB8 Position
+		startPositionColumn = determineBB8startPositionColumn(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
 				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
 
-		System.out.println(startPositionX);
+		System.out.println(startPositionColumn);
+
+		startPositionRow = determineBB8startPositionRow(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+
+		System.out.println(startPositionRow);
+		
+		
+		// Exit Position
+		exitPositionColumn = determineexitPositionColumn(labyrinthTwo, SIGN_EXIT);
+
+		System.out.println(exitPositionColumn);
+
+		exitPositionRow = determineexitPositionRow(labyrinthTwo, SIGN_EXIT);
+
+		System.out.println(exitPositionRow);
 
 	}
 
-	public static int determineStartPositionX(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
+	// Position von BB8 (X-Achse)
+	public static int determineBB8startPositionColumn(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
 			char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
 
-		int posX = -1;
+		int posColumn = -1;
 
 		// First row
 		for (int i = 0; i < labyrinth[0].length; i++) {
 			if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
 					|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
 
-				posX = i;
+				posColumn = 0;
 			}
 		}
 
 		// First column
-		if (posX == -1) {
+		if (posColumn == -1) {
 			for (int i = 0; i < labyrinth.length; i++) {
 				if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
 						|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
-					
-					posX = i;
-					
+
+					posColumn = i;
+
 				}
 			}
 		}
 
 		// Last column
-
-		if (posX == -1) {
+		if (posColumn == -1) {
 			for (int i = 0; i < labyrinth.length; i++) {
-				
+
 				int lastCurrentRowIndex = labyrinth[i].length - 1;
 
 				if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
@@ -63,30 +83,209 @@ public class Labyrinth {
 						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
 						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
 
-					posX = i;
+					posColumn = i;
 
 				}
 			}
 		}
 
 		// Last row
-		if (posX == -1) {
+		if (posColumn == -1) {
 			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
-				
+
 				int lastRowIndex = labyrinth.length - 1;
-				
+
 				if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
 						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
 						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
 						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
 
-					posX = i;
+					posColumn = lastRowIndex;
 
 				}
 			}
 		}
 
-		return posX;
+		return posColumn;
+
+	}
+
+	// Position von BB8 (Y-Achse)
+	public static int determineBB8startPositionRow(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
+			char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
+
+		int posRow = -1;
+
+		// First row
+		for (int i = 0; i < labyrinth[0].length; i++) {
+			if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
+					|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
+
+				posRow = i;
+			}
+		}
+
+		// First column
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+				if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
+						|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
+
+					posRow = 0;
+
+				}
+			}
+		}
+
+		// Last column
+
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+
+				int lastCurrentRowIndex = labyrinth[i].length - 1;
+
+				if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_LEFT
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
+
+					posRow = lastCurrentRowIndex;
+
+				}
+			}
+		}
+
+		// Last row
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
+
+				int lastRowIndex = labyrinth.length - 1;
+
+				if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
+
+					posRow = i;
+
+				}
+			}
+		}
+
+		return posRow;
+
+	}
+
+	// Position von Exit (X-Achse)
+	public static int determineexitPositionColumn(char[][] labyrinth, char SIGN_EXIT) {
+
+		int posColumn = -1;
+
+		// First row
+		for (int i = 0; i < labyrinth[0].length; i++) {
+			if (labyrinth[0][i] == SIGN_EXIT) {
+
+				posColumn = 0;
+			}
+		}
+
+		// First column
+		if (posColumn == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+				if (labyrinth[i][0] == SIGN_EXIT) {
+
+					posColumn = i;
+
+				}
+			}
+		}
+
+		// Last column
+		if (posColumn == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+
+				int lastCurrentRowIndex = labyrinth[i].length - 1;
+
+				if (labyrinth[i][lastCurrentRowIndex] == SIGN_EXIT) {
+
+					posColumn = i;
+
+				}
+			}
+		}
+
+		// Last row
+		if (posColumn == -1) {
+			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
+
+				int lastRowIndex = labyrinth.length - 1;
+
+				if (labyrinth[lastRowIndex][i] == SIGN_EXIT) {
+
+					posColumn = lastRowIndex;
+
+				}
+			}
+		}
+
+		return posColumn;
+
+	}
+
+	// Position von Exit (Y-Achse)
+	public static int determineexitPositionRow(char[][] labyrinth, char SIGN_EXIT) {
+
+		int posRow = -1;
+
+		// First row
+		for (int i = 0; i < labyrinth[0].length; i++) {
+			if (labyrinth[0][i] == SIGN_EXIT) {
+
+				posRow = i;
+			}
+		}
+
+		// First column
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+				if (labyrinth[i][0] == SIGN_EXIT) {
+
+					posRow = 0;
+
+				}
+			}
+		}
+
+		// Last column
+
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+
+				int lastCurrentRowIndex = labyrinth[i].length - 1;
+
+				if (labyrinth[i][lastCurrentRowIndex] == SIGN_EXIT) {
+
+					posRow = lastCurrentRowIndex;
+
+				}
+			}
+		}
+
+		// Last row
+		if (posRow == -1) {
+			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
+
+				int lastRowIndex = labyrinth.length - 1;
+
+				if (labyrinth[lastRowIndex][i] == SIGN_EXIT) {
+
+					posRow = i;
+
+				}
+			}
+		}
+
+		return posRow;
 
 	}
 
