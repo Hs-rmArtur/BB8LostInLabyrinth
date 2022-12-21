@@ -10,11 +10,83 @@ public class Labyrinth {
 		final char SIGN_PATH = ' ';
 		final char SIGN_EXIT = 'E';
 
+		int startPositionX;
+
 		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
 		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 
 		drawLabyrinth(labyrinthThree);
+
+		startPositionX = determineStartPositionX(labyrinthThree, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+
+		System.out.println(startPositionX);
+
+	}
+
+	public static int determineStartPositionX(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
+			char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
+
+		int posX = -1;
+
+		// First row
+		for (int i = 0; i < labyrinth[0].length; i++) {
+			if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
+					|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
+
+				posX = i;
+			}
+		}
+
+		// First column
+		if (posX == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+				if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
+						|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
+					
+					posX = i;
+					
+				}
+			}
+		}
+
+		// Last column
+
+		if (posX == -1) {
+			for (int i = 0; i < labyrinth.length; i++) {
+				
+				int lastCurrentRowIndex = labyrinth[i].length - 1;
+
+				if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_LEFT
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
+						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
+
+					posX = i;
+
+				}
+			}
+		}
+
+		// Last row
+		if (posX == -1) {
+			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
+				
+				int lastRowIndex = labyrinth.length - 1;
+				
+				if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
+						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
+
+					posX = i;
+
+				}
+			}
+		}
+
+		return posX;
 
 	}
 
@@ -23,23 +95,38 @@ public class Labyrinth {
 		char path = signPath;
 
 		char[][] labyrinth = {
-				{ wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall}, // 0. Zeile
-				{ wall, wall, path, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall}, // 1. Zeile
-				{ wall, wall, path, wall, wall, wall, path, path, path, path, path, path, path, path, path, path, wall}, // 2. Zeile
-				{ wall, wall, path, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, path, wall}, // 3. Zeile
-				{ wall, path, path, path, path, path, path, path, path, path, path, path, path, path, path, path, wall}, // 4. Zeile
-				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall}, // 5. Zeile
-				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, path, path, wall, wall, wall, wall}, // 6. Zeile
-				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall, wall}, // 7. Zeile
-				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, path, path, path, path, wall}, // 8. Zeile
-				{ wall, path, path, path, path, path, path, path, path, wall, path, wall, path, wall, wall, wall, wall}, // 9. Zeile
-				{ wall, path, wall, path, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall, wall}, // 10. Zeile
-				{ wall, path, wall, path, path, path, path, wall, path, wall, path, wall, path, wall, wall, wall, wall}, // 11. Zeile
-				{ wall, path, wall, path, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall, wall}, // 12. Zeile
-				{ wall, wall, wall, path, wall, path, path, path, path, path, path, wall, path, wall, wall, wall, wall}, // 13. Zeile
-				{ path, path, path, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, wall, wall, wall}, // 14. Zeile
-				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall}, // 15. Zeile
-
+				{ wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,
+						wall }, // 0. Zeile
+				{ wall, wall, path, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, wall,
+						wall }, // 1. Zeile
+				{ wall, wall, path, wall, wall, wall, path, path, path, path, path, path, path, path, path, path,
+						wall }, // 2. Zeile
+				{ wall, wall, path, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall, wall, path,
+						wall }, // 3. Zeile
+				{ wall, path, path, path, path, path, path, path, path, path, path, path, path, path, path, path,
+						wall }, // 4. Zeile
+				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, wall, wall, wall, wall, wall, wall,
+						wall }, // 5. Zeile
+				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, path, path, wall, wall, wall,
+						wall }, // 6. Zeile
+				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall,
+						wall }, // 7. Zeile
+				{ wall, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, path, path, path, path,
+						wall }, // 8. Zeile
+				{ wall, path, path, path, path, path, path, path, path, wall, path, wall, path, wall, wall, wall,
+						wall }, // 9. Zeile
+				{ wall, path, wall, path, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall,
+						wall }, // 10. Zeile
+				{ wall, path, wall, path, path, path, path, wall, path, wall, path, wall, path, wall, wall, wall,
+						wall }, // 11. Zeile
+				{ wall, path, wall, path, wall, wall, wall, wall, path, wall, path, wall, path, wall, wall, wall,
+						wall }, // 12. Zeile
+				{ wall, wall, wall, path, wall, path, path, path, path, path, path, wall, path, wall, wall, wall,
+						wall }, // 13. Zeile
+				{ path, path, path, path, wall, wall, wall, wall, wall, wall, path, wall, path, wall, wall, wall,
+						wall }, // 14. Zeile
+				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,
+						wall }, // 15. Zeile
 
 		};
 
@@ -53,9 +140,8 @@ public class Labyrinth {
 		char wall = signWall;
 		char path = signPath;
 
-		char[][] labyrinth = {
-				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0. Zeile
-				{ wall, path, path, path, wall, path, path, path, path, path, wall }, // 1. Zeile
+		char[][] labyrinth = { { wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0. Zeile
+				{ path, path, path, path, wall, path, path, path, path, path, wall }, // 1. Zeile
 				{ wall, path, wall, wall, wall, wall, wall, path, wall, path, wall }, // 2. Zeile
 				{ wall, path, path, path, path, path, wall, path, wall, path, wall }, // 3. Zeile
 				{ wall, path, wall, path, wall, path, wall, wall, wall, path, wall }, // 4. Zeile
@@ -63,13 +149,13 @@ public class Labyrinth {
 				{ wall, path, wall, path, wall, wall, wall, wall, wall, path, wall }, // 6. Zeile
 				{ wall, path, wall, path, path, path, path, path, path, path, wall }, // 7. Zeile
 				{ wall, path, wall, wall, wall, path, wall, wall, wall, path, wall }, // 8. Zeile
-				{ wall, path, wall, path, path, path, wall, path, path, path, wall }, // 9. Zeile
+				{ wall, path, wall, path, path, path, wall, path, path, path, path }, // 9. Zeile
 				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall } // 10. Zeile
 		};
 
-		//BB-8 Startposition
+		// BB-8 Startposition
 		labyrinth[9][10] = signBb8;
-		//Exit Position
+		// Exit Position
 		labyrinth[1][0] = signExit;
 
 		return labyrinth;
@@ -79,8 +165,7 @@ public class Labyrinth {
 		char wall = signWall;
 		char path = signPath;
 
-		char[][] labyrinth = {
-				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0 Zeile
+		char[][] labyrinth = { { wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0 Zeile
 				{ path, path, path, path, path, path, wall, path, path, path, path, path }, // 1 Zeile
 				{ wall, wall, wall, wall, wall, path, wall, path, wall, wall, wall, wall }, // 2 Zeile
 				{ wall, path, path, path, path, path, wall, path, path, path, path, wall }, // 3 Zeile
