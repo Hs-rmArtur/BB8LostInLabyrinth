@@ -1,5 +1,5 @@
 public class Labyrinth {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		// Deklaration
 		final char BB8_DIRECTION_RIGHT = '>';
@@ -9,47 +9,134 @@ public class Labyrinth {
 		final char SIGN_WALL = '#';
 		final char SIGN_PATH = ' ';
 		final char SIGN_EXIT = 'E';
+		
+
+		int[] bb8Position; // [0] = Column [1] = Row
 		char currentDirection;
-
-		int bb8PositionRow;
-		int bb8PositionColumn;
 		
-		int exitPositionRow;
-		int exitPositionColumn;
 
-		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
+//		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
-		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-
-		drawLabyrinth(labyrinthOne);
-		
-		currentDirection = BB8_DIRECTION_RIGHT;
-
-		// BB8 Start Position
-		bb8PositionColumn = determineBB8startPositionColumn(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
-
-		bb8PositionRow = determineBB8startPositionRow(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+//		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 
 		
-		// Exit Position
-		exitPositionColumn = determineexitPositionColumn(labyrinthOne, SIGN_EXIT);
-
-		exitPositionRow = determineexitPositionRow(labyrinthOne, SIGN_EXIT);
 		
-		checkIfWallRight(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8PositionColumn, bb8PositionRow, SIGN_WALL, currentDirection);
-
-		System.out.println(checkIfWallRight(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8PositionColumn, bb8PositionRow, SIGN_WALL, currentDirection));
+		currentDirection = BB8_DIRECTION_LEFT;
+		bb8Position = determineBB8startPosition(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+		
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		currentDirection = turnRight(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		currentDirection = turnLeft(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		makeStep(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, SIGN_PATH, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		currentDirection = turnRight(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8Position, currentDirection);
+		drawLabyrinth(labyrinthTwo);
+		
+		
+		
+		
 
 	}
 	
+	// 0.CheckIfExit
+	// 1. CheckIfRightWall --> false --> turn right --> step
+	// 2. CheckIfFrontWall --> false --> step
+	// 3. 1 + 2 true --> turnLeft --> repeat 0, 1, 2, 3....
+	
+	public static void makeStep(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, final char SIGN_PATH, int[] bb8Position, char currentDirection) {
+		
+		int bb8PositionColumn = bb8Position[0];
+		int bb8PositionRow = bb8Position[1];
+		
+		if (currentDirection == BB8_DIRECTION_RIGHT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow + 1] = BB8_DIRECTION_RIGHT;
+			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
+			
+			bb8Position[1] = bb8PositionRow + 1;
+			
+		} else if (currentDirection == BB8_DIRECTION_LEFT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow - 1] = BB8_DIRECTION_LEFT;
+			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
+			
+			bb8Position[1] = bb8PositionRow - 1;
+			
+		} else if (currentDirection == BB8_DIRECTION_UP) {
+			
+			labyrinth[bb8PositionColumn - 1][bb8PositionRow] = BB8_DIRECTION_UP;
+			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
+			
+			bb8Position[0] = bb8PositionColumn -1;
+			
+		} else if (currentDirection == BB8_DIRECTION_DOWN) {
+			
+			labyrinth[bb8PositionColumn + 1][bb8PositionRow] = BB8_DIRECTION_LEFT;
+			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
+			
+			bb8Position[0] = bb8PositionColumn + 1;
+		}
+		
+	}
+	
+	
+	public static char turnLeft(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, char currentDirection) {
+		
+		int bb8PositionColumn = bb8Position[0];
+		int bb8PositionRow = bb8Position[1];
+		char newDirection = ' ';
+		
+		if (currentDirection == BB8_DIRECTION_RIGHT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_UP;
+			
+			newDirection = BB8_DIRECTION_UP;
+			
+		} else if (currentDirection == BB8_DIRECTION_LEFT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_DOWN;
+			newDirection = BB8_DIRECTION_DOWN;
+			
+		} else if (currentDirection == BB8_DIRECTION_UP) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_LEFT;
+			newDirection = BB8_DIRECTION_LEFT;
+			
+		} else if (currentDirection == BB8_DIRECTION_DOWN) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_RIGHT;
+			newDirection = BB8_DIRECTION_RIGHT;
+		}
+		
+		return newDirection;
+	}
+	
+	
 	
 	public static char turnRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, char currentDirection) {
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, char currentDirection) {
 		
+		int bb8PositionColumn = bb8Position[0];
+		int bb8PositionRow = bb8Position[1];
 		char newDirection = ' ';
 		
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
@@ -79,8 +166,10 @@ public class Labyrinth {
 	
 	
 	public static boolean checkIfWallFront(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, final char SIGN_WALL, char currentDirection) {
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, final char SIGN_WALL, char currentDirection) {
 		
+		int bb8PositionColumn = bb8Position[0];
+		int bb8PositionRow = bb8Position[1];
 		boolean isWall = false;
 		
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
@@ -110,7 +199,10 @@ public class Labyrinth {
 	}
 	
 	public static boolean checkIfWallRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, final char SIGN_WALL, char currentDirection) {
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, final char SIGN_WALL, char currentDirection) {
+		
+		int bb8PositionColumn = bb8Position[0];
+		int bb8PositionRow = bb8Position[1];
 		
 		boolean isWall = false;
 		
@@ -142,140 +234,87 @@ public class Labyrinth {
 	
 	
 	
-
+	
 	// Position von BB8 (X-Achse)
-	public static int determineBB8startPositionColumn(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
-			char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
+		public static int[] determineBB8startPosition(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
+				char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
 
-		int posColumn = -1;
+			int[] BB8Position = new int[2];
+					
+			int posColumn = -1;
+			int posRow = -1;
+			
+			// First row
+			for (int i = 0; i < labyrinth[0].length; i++) {
+				if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
+						|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
 
-		// First row
-		for (int i = 0; i < labyrinth[0].length; i++) {
-			if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
-					|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
-
-				posColumn = 0;
-			}
-		}
-
-		// First column
-		if (posColumn == -1) {
-			for (int i = 0; i < labyrinth.length; i++) {
-				if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
-						|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
-
-					posColumn = i;
-
-				}
-			}
-		}
-
-		// Last column
-		if (posColumn == -1) {
-			for (int i = 0; i < labyrinth.length; i++) {
-
-				int lastCurrentRowIndex = labyrinth[i].length - 1;
-
-				if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_LEFT
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
-
-					posColumn = i;
-
-				}
-			}
-		}
-
-		// Last row
-		if (posColumn == -1) {
-			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
-
-				int lastRowIndex = labyrinth.length - 1;
-
-				if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
-
-					posColumn = lastRowIndex;
-
-				}
-			}
-		}
-
-		return posColumn;
-
-	}
-
-	// Position von BB8 (Y-Achse)
-	public static int determineBB8startPositionRow(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
-			char BB8_DIRECTION_UP, char BB8_DIRECTION_DOWN) {
-
-		int posRow = -1;
-
-		// First row
-		for (int i = 0; i < labyrinth[0].length; i++) {
-			if (labyrinth[0][i] == BB8_DIRECTION_RIGHT || labyrinth[0][i] == BB8_DIRECTION_LEFT
-					|| labyrinth[0][i] == BB8_DIRECTION_UP || labyrinth[0][i] == BB8_DIRECTION_DOWN) {
-
-				posRow = i;
-			}
-		}
-
-		// First column
-		if (posRow == -1) {
-			for (int i = 0; i < labyrinth.length; i++) {
-				if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
-						|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
-
-					posRow = 0;
-
-				}
-			}
-		}
-
-		// Last column
-
-		if (posRow == -1) {
-			for (int i = 0; i < labyrinth.length; i++) {
-
-				int lastCurrentRowIndex = labyrinth[i].length - 1;
-
-				if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_LEFT
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
-						|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
-
-					posRow = lastCurrentRowIndex;
-
-				}
-			}
-		}
-
-		// Last row
-		if (posRow == -1) {
-			for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
-
-				int lastRowIndex = labyrinth.length - 1;
-
-				if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
-						|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
-
+					posColumn = 0;
 					posRow = i;
-
 				}
 			}
+
+			// First column
+			if (posColumn == -1) {
+				for (int i = 0; i < labyrinth.length; i++) {
+					if (labyrinth[i][0] == BB8_DIRECTION_RIGHT || labyrinth[i][0] == BB8_DIRECTION_LEFT
+							|| labyrinth[i][0] == BB8_DIRECTION_UP || labyrinth[i][0] == BB8_DIRECTION_DOWN) {
+
+						posColumn = i;
+						posRow = 0;
+
+					}
+				}
+			}
+
+			// Last column
+			if (posColumn == -1) {
+				for (int i = 0; i < labyrinth.length; i++) {
+
+					int lastCurrentRowIndex = labyrinth[i].length - 1;
+
+					if (labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_RIGHT
+							|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_LEFT
+							|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_UP
+							|| labyrinth[i][lastCurrentRowIndex] == BB8_DIRECTION_DOWN) {
+
+						posColumn = i;
+						posRow = lastCurrentRowIndex;
+
+					}
+				}
+			}
+
+			// Last row
+			if (posColumn == -1) {
+				for (int i = 0; i < labyrinth[labyrinth.length - 1].length; i++) {
+
+					int lastRowIndex = labyrinth.length - 1;
+
+					if (labyrinth[lastRowIndex][i] == BB8_DIRECTION_RIGHT
+							|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_LEFT
+							|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_UP
+							|| labyrinth[lastRowIndex][i] == BB8_DIRECTION_DOWN) {
+
+						posColumn = lastRowIndex;
+						posRow = i;
+
+					}
+				}
+			}
+			
+			BB8Position[0] = posColumn;
+			BB8Position[1] = posRow;
+			
+
+			return BB8Position;
+
 		}
 
-		return posRow;
-
-	}
-
+	
+/*
 	// Position von Exit (X-Achse)
-	public static int determineexitPositionColumn(char[][] labyrinth, char SIGN_EXIT) {
+	public static int determineExitPositionColumn(char[][] labyrinth, char SIGN_EXIT) {
 
 		int posColumn = -1;
 
@@ -331,7 +370,7 @@ public class Labyrinth {
 	}
 
 	// Position von Exit (Y-Achse)
-	public static int determineexitPositionRow(char[][] labyrinth, char SIGN_EXIT) {
+	public static int determineExitPositionRow(char[][] labyrinth, char SIGN_EXIT) {
 
 		int posRow = -1;
 
@@ -386,6 +425,8 @@ public class Labyrinth {
 		return posRow;
 
 	}
+	
+	*/
 
 	public static char[][] buildLabyrinthThree(char signWall, char signPath, char signBb8, char signExit) {
 		char wall = signWall;
