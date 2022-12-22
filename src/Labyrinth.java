@@ -9,9 +9,10 @@ public class Labyrinth {
 		final char SIGN_WALL = '#';
 		final char SIGN_PATH = ' ';
 		final char SIGN_EXIT = 'E';
+		char currentDirection;
 
-		int startPositionRow;
-		int startPositionColumn;
+		int bb8PositionRow;
+		int bb8PositionColumn;
 		
 		int exitPositionRow;
 		int exitPositionColumn;
@@ -20,30 +21,127 @@ public class Labyrinth {
 		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
 		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 
-		drawLabyrinth(labyrinthTwo);
-
-		// BB8 Position
-		startPositionColumn = determineBB8startPositionColumn(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
-
-		System.out.println(startPositionColumn);
-
-		startPositionRow = determineBB8startPositionRow(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
-				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
-
-		System.out.println(startPositionRow);
+		drawLabyrinth(labyrinthOne);
 		
+		currentDirection = BB8_DIRECTION_RIGHT;
+
+		// BB8 Start Position
+		bb8PositionColumn = determineBB8startPositionColumn(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+
+		bb8PositionRow = determineBB8startPositionRow(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+
 		
 		// Exit Position
-		exitPositionColumn = determineexitPositionColumn(labyrinthTwo, SIGN_EXIT);
+		exitPositionColumn = determineexitPositionColumn(labyrinthOne, SIGN_EXIT);
 
-		System.out.println(exitPositionColumn);
+		exitPositionRow = determineexitPositionRow(labyrinthOne, SIGN_EXIT);
+		
+		checkIfWallRight(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8PositionColumn, bb8PositionRow, SIGN_WALL, currentDirection);
 
-		exitPositionRow = determineexitPositionRow(labyrinthTwo, SIGN_EXIT);
-
-		System.out.println(exitPositionRow);
+		System.out.println(checkIfWallRight(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
+				BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, bb8PositionColumn, bb8PositionRow, SIGN_WALL, currentDirection));
 
 	}
+	
+	
+	public static char turnRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, char currentDirection) {
+		
+		char newDirection = ' ';
+		
+		if (currentDirection == BB8_DIRECTION_RIGHT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_DOWN;
+			
+			newDirection = BB8_DIRECTION_DOWN;
+			
+		} else if (currentDirection == BB8_DIRECTION_LEFT) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_UP;
+			newDirection = BB8_DIRECTION_UP;
+			
+		} else if (currentDirection == BB8_DIRECTION_UP) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_RIGHT;
+			newDirection = BB8_DIRECTION_RIGHT;
+			
+		} else if (currentDirection == BB8_DIRECTION_DOWN) {
+			
+			labyrinth[bb8PositionColumn][bb8PositionRow] = BB8_DIRECTION_LEFT;
+			newDirection = BB8_DIRECTION_LEFT;
+		}
+		
+		return newDirection;
+	}
+	
+	
+	public static boolean checkIfWallFront(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, final char SIGN_WALL, char currentDirection) {
+		
+		boolean isWall = false;
+		
+		if (currentDirection == BB8_DIRECTION_RIGHT) {
+			if (labyrinth[bb8PositionColumn][bb8PositionRow + 1] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking right and in front from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_LEFT) {
+			if (labyrinth[bb8PositionColumn][bb8PositionRow - 1] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking left and in front from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_UP) {
+			if (labyrinth[bb8PositionColumn - 1][bb8PositionRow] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking up and in front from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_DOWN) {
+			if (labyrinth[bb8PositionColumn + 1][bb8PositionRow] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking down and in front from him is Wall");
+			}
+		}
+			
+		
+		return isWall;
+	}
+	
+	public static boolean checkIfWallRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
+			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int bb8PositionColumn, int bb8PositionRow, final char SIGN_WALL, char currentDirection) {
+		
+		boolean isWall = false;
+		
+		if (currentDirection == BB8_DIRECTION_RIGHT) {
+			if (labyrinth[bb8PositionColumn + 1][bb8PositionRow] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking right and right from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_LEFT) {
+			if (labyrinth[bb8PositionColumn - 1][bb8PositionRow] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking left and right from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_UP) {
+			if (labyrinth[bb8PositionColumn][bb8PositionRow + 1] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking up and right from him is Wall");
+			}
+		} else if (currentDirection == BB8_DIRECTION_DOWN) {
+			if (labyrinth[bb8PositionColumn][bb8PositionRow - 1] == SIGN_WALL) {
+				isWall = true;
+				System.out.println("Is looking down and right from him is Wall");
+			}
+		}
+			
+		
+		return isWall;
+	}
+	
+	
+	
 
 	// Position von BB8 (X-Achse)
 	public static int determineBB8startPositionColumn(char[][] labyrinth, char BB8_DIRECTION_RIGHT, char BB8_DIRECTION_LEFT,
@@ -364,7 +462,8 @@ public class Labyrinth {
 		char wall = signWall;
 		char path = signPath;
 
-		char[][] labyrinth = { { wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0 Zeile
+		char[][] labyrinth = { 
+				{ wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall }, // 0 Zeile
 				{ path, path, path, path, path, path, wall, path, path, path, path, path }, // 1 Zeile
 				{ wall, wall, wall, wall, wall, path, wall, path, wall, wall, wall, wall }, // 2 Zeile
 				{ wall, path, path, path, path, path, wall, path, path, path, path, wall }, // 3 Zeile
