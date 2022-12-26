@@ -14,14 +14,14 @@ public class Labyrinth {
 		char currentDirection;
 
 //		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
-//		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
+//		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
+		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 
-		currentDirection = BB8_DIRECTION_LEFT;
-		bb8Position = determineBB8startPosition(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
+		currentDirection = BB8_DIRECTION_RIGHT;
+		bb8Position = determineBB8startPosition(labyrinthThree, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN);
 
-		findWayThroughLabyrinth(labyrinthTwo, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
+		findWayThroughLabyrinth(labyrinthThree, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position);
 
 	}
@@ -69,7 +69,7 @@ public class Labyrinth {
 
 					drawLabyrinth(labyrinth);
 
-					Thread.sleep(1000);
+					Thread.sleep(500);
 
 					isExit = true;
 
@@ -82,7 +82,7 @@ public class Labyrinth {
 
 					drawLabyrinth(labyrinth);
 
-					Thread.sleep(1000);
+					Thread.sleep(500);
 
 					isExit = true;
 
@@ -97,7 +97,7 @@ public class Labyrinth {
 
 						drawLabyrinth(labyrinth);
 
-						Thread.sleep(1000);
+						Thread.sleep(500);
 
 					}
 
@@ -105,13 +105,16 @@ public class Labyrinth {
 
 						currentDirection = turnRight(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT,
 								BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, currentPosition, currentDirection);
-
+						
+						drawLabyrinth(labyrinth);
+						Thread.sleep(500);
+						
 						makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 								BB8_DIRECTION_DOWN, SIGN_PATH, currentPosition, currentDirection);
 
 						drawLabyrinth(labyrinth);
 
-						Thread.sleep(1000);
+						Thread.sleep(500);
 
 					}
 
@@ -122,7 +125,7 @@ public class Labyrinth {
 
 						drawLabyrinth(labyrinth);
 
-						Thread.sleep(1000);
+						Thread.sleep(500);
 
 					}
 
@@ -164,7 +167,7 @@ public class Labyrinth {
 
 		} else if (currentDirection == BB8_DIRECTION_DOWN) {
 
-			labyrinth[bb8PositionColumn + 1][bb8PositionRow] = BB8_DIRECTION_LEFT;
+			labyrinth[bb8PositionColumn + 1][bb8PositionRow] = BB8_DIRECTION_DOWN;
 			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
 
 			bb8Position[0] = bb8PositionColumn + 1;
@@ -247,22 +250,18 @@ public class Labyrinth {
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
 			if (labyrinth[bb8PositionColumn][bb8PositionRow + 1] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking right and in front from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_LEFT) {
 			if (labyrinth[bb8PositionColumn][bb8PositionRow - 1] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking left and in front from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_UP) {
 			if (labyrinth[bb8PositionColumn - 1][bb8PositionRow] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking up and in front from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_DOWN) {
 			if (labyrinth[bb8PositionColumn + 1][bb8PositionRow] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking down and in front from him is Wall");
 			}
 		}
 
@@ -281,22 +280,18 @@ public class Labyrinth {
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
 			if (labyrinth[bb8PositionColumn + 1][bb8PositionRow] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking right and right from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_LEFT) {
 			if (labyrinth[bb8PositionColumn - 1][bb8PositionRow] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking left and right from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_UP) {
 			if (labyrinth[bb8PositionColumn][bb8PositionRow + 1] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking up and right from him is Wall");
 			}
 		} else if (currentDirection == BB8_DIRECTION_DOWN) {
 			if (labyrinth[bb8PositionColumn][bb8PositionRow - 1] == SIGN_WALL) {
 				isWall = true;
-				System.out.println("Is looking down and right from him is Wall");
 			}
 		}
 
