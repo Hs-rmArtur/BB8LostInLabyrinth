@@ -46,7 +46,7 @@ public class Labyrinth {
 				break;
 			}
 			default:
-				System.out.println("Eingabe ungültig. Bitte wählen Sie erneut.");
+				System.out.println("Input is not valid. Please choose again.");
 			}
 		}
 
