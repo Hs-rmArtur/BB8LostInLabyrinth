@@ -13,61 +13,63 @@ public class Labyrinth {
 		final char SIGN_EXIT = 'E';
 
 		int[] bb8Position; // [0] = Column [1] = Row
-		char currentDirection;
+		char currentDirection = 0;
 
-<<<<<<< HEAD
+		char[][] labyrinth = null;
+		char[][] labyrinthMap = null;
 
-		System.out.println("Which labyrinth should choose the BB-8 ('e'asy/'m'edium/'h'ard)?");
+		boolean userInputCorrect = false;
 
-		char userInput = StaticScanner.nextChar();
+		while (userInputCorrect == false) {
 
-		switch (userInput) {
-		case 'e': {
+			System.out.println("Which labyrinth should choose the BB-8 ('e'asy/'m'edium/'h'ard)?");
 
-			char[][] labyrinth = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-			currentDirection = BB8_DIRECTION_RIGHT;
-			break;
+			char userInput = StaticScanner.nextChar();
+
+			switch (userInput) {
+			case 'e': {
+				labyrinth = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
+				currentDirection = BB8_DIRECTION_RIGHT;
+				userInputCorrect = true;
+				break;
+			}
+			case 'm': {
+				labyrinth = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
+				currentDirection = BB8_DIRECTION_LEFT;
+				userInputCorrect = true;
+				break;
+			}
+			case 'h': {
+				labyrinth = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
+				currentDirection = BB8_DIRECTION_RIGHT;
+				userInputCorrect = true;
+				break;
+			}
+			default:
+				System.out.println("Eingabe ungültig. Bitte wählen Sie erneut.");
+			}
 		}
-		case 'm': {
-			char[][] labyrinth = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
-			currentDirection = BB8_DIRECTION_LEFT;
-			break;
-		}
-		case 'h': {
-			char[][] labyrinth = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-			currentDirection = BB8_DIRECTION_RIGHT;
-			break;
-		}
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + userInput);
-		}
 
-
-=======
-		char[][] labyrinthOne = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-//		char[][] labyrinthTwo = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
-//		char[][] labyrinthThree = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-
->>>>>>> c1f1aab6181b9c9fe3511982f3262f6cd7d1845c
-		currentDirection = BB8_DIRECTION_RIGHT;
-		bb8Position = determineBB8startPosition(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
+		bb8Position = determineBB8startPosition(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN);
-		
-		char[][] labyrinthMap = buildLabyrinthMap(labyrinthOne);
 
-<<<<<<< HEAD
-		char[][] labyrinthMap = buildLabyrinthMap(labyrinthOne);
+		labyrinthMap = buildLabyrinthMap(labyrinth);
 
-		findWayThroughLabyrinth(labyrinthOne, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
+		findWayThroughLabyrinth(labyrinth, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position);
 	}
-
 
 	public static char[][] buildLabyrinthMap(char[][] labyrinth) {
 
 		int columnLength = labyrinth.length;
 		int rowLength = labyrinth[0].length;
 		char[][] labyrinthMap = new char[columnLength][rowLength];
+
+		for (int i = 0; i < labyrinthMap.length; i++) {
+			for (int j = 0; j < labyrinthMap[i].length; j++) {
+				(labyrinthMap[i][j]) = ' ';
+			}
+		}
 
 		return labyrinthMap;
 
@@ -89,44 +91,10 @@ public class Labyrinth {
 		labyrinthMap[columnPosition][rowPosition] = currentDirection;
 	}
 
-=======
-		findWayThroughLabyrinth(labyrinthOne, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position);
-		
-	}
-	
-	
-	public static char[][] buildLabyrinthMap(char[][] labyrinth) {
-		
-		int columnLength = labyrinth.length;
-		int rowLength = labyrinth[0].length;
-		char[][] labyrinthMap = new char[columnLength][rowLength];
-		
-		return labyrinthMap;
-		
-	}
-	
-	public static void drawLabyrinthMap(char[][] labyrinthMap) {
-		
-		for (int i = 0; i < labyrinthMap.length; i++) {
-			for (int j = 0; j < labyrinthMap[i].length; j++) {
-				System.out.print(labyrinthMap[i][j]);
-			}
-			System.out.println();
-		}
-	}
-	
-	public static void drawStepIntoMap(char[][] labyrinthMap, char currentDirection, int[] currentPosition) {
-		int columnPosition = currentPosition[0];
-		int rowPosition = currentPosition[1];
-		labyrinthMap[columnPosition][rowPosition] = currentDirection;
-	}
-
->>>>>>> c1f1aab6181b9c9fe3511982f3262f6cd7d1845c
-	public static void findWayThroughLabyrinth(char[][] labyrinth, char[][] labyrinthMap, final char BB8_DIRECTION_RIGHT,
-			final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN,
-			final char SIGN_PATH, final char SIGN_WALL, final char SIGN_EXIT, char currentDirection,
-			int[] currentPosition) throws InterruptedException {
+	public static void findWayThroughLabyrinth(char[][] labyrinth, char[][] labyrinthMap,
+			final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP,
+			final char BB8_DIRECTION_DOWN, final char SIGN_PATH, final char SIGN_WALL, final char SIGN_EXIT,
+			char currentDirection, int[] currentPosition) throws InterruptedException {
 
 		boolean isExit = false;
 		boolean isExitRight = false;
@@ -135,20 +103,11 @@ public class Labyrinth {
 		boolean isWallRight = false;
 		boolean isWallFront = false;
 
-		int sleepingTime = 500;
-<<<<<<< HEAD
+		int sleepingTime = 100;
 
 		// Counted steps of BB8 in the labyrinth
 		int countedSteps = 0;
 
-
-=======
-		
-		// Counted steps of BB8 in the labyrinth
-		int countedSteps = 0;
-		
-		
->>>>>>> c1f1aab6181b9c9fe3511982f3262f6cd7d1845c
 		drawLabyrinth(labyrinth);
 
 		while (isExit == false) {
@@ -176,16 +135,10 @@ public class Labyrinth {
 
 				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 						SIGN_PATH, currentPosition, currentDirection);
-				
-				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-				
-				countedSteps++;
-				
 
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
 				countedSteps++;
-
 
 				drawLabyrinth(labyrinth);
 
@@ -197,10 +150,6 @@ public class Labyrinth {
 
 				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 						SIGN_PATH, currentPosition, currentDirection);
-				
-				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-				
-				countedSteps++;
 
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -226,10 +175,6 @@ public class Labyrinth {
 
 					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 							SIGN_PATH, currentPosition, currentDirection);
-					
-					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-					
-					countedSteps++;
 
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -243,10 +188,6 @@ public class Labyrinth {
 
 					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 							SIGN_PATH, currentPosition, currentDirection);
-					
-					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-					
-					countedSteps++;
 
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -283,19 +224,12 @@ public class Labyrinth {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
-	
-
 
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
 
 			labyrinth[bb8PositionColumn][bb8PositionRow + 1] = BB8_DIRECTION_RIGHT;
 			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
 
-<<<<<<< HEAD
-
-=======
-			
->>>>>>> c1f1aab6181b9c9fe3511982f3262f6cd7d1845c
 			bb8Position[1] = bb8PositionRow + 1;
 
 		} else if (currentDirection == BB8_DIRECTION_LEFT) {
@@ -692,5 +626,6 @@ public class Labyrinth {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 }
