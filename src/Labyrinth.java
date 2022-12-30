@@ -15,14 +15,14 @@ public class Labyrinth {
 		int[] bb8Position; // [0] = Column [1] = Row
 		char currentDirection;
 
-		
+
 		System.out.println("Which labyrinth should choose the BB-8 ('e'asy/'m'edium/'h'ard)?");
-		
+
 		char userInput = StaticScanner.nextChar();
-		
+
 		switch (userInput) {
 		case 'e': {
-			
+
 			char[][] labyrinth = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
 			currentDirection = BB8_DIRECTION_RIGHT;
 			break;
@@ -40,32 +40,31 @@ public class Labyrinth {
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + userInput);
 		}
-		
+
 
 		currentDirection = BB8_DIRECTION_RIGHT;
 		bb8Position = determineBB8startPosition(labyrinthOne, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN);
-		
+
 		char[][] labyrinthMap = buildLabyrinthMap(labyrinthOne);
 
 		findWayThroughLabyrinth(labyrinthOne, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position);
-		
 	}
-	
-	
+
+
 	public static char[][] buildLabyrinthMap(char[][] labyrinth) {
-		
+
 		int columnLength = labyrinth.length;
 		int rowLength = labyrinth[0].length;
 		char[][] labyrinthMap = new char[columnLength][rowLength];
-		
+
 		return labyrinthMap;
-		
+
 	}
-	
+
 	public static void drawLabyrinthMap(char[][] labyrinthMap) {
-		
+
 		for (int i = 0; i < labyrinthMap.length; i++) {
 			for (int j = 0; j < labyrinthMap[i].length; j++) {
 				System.out.print(labyrinthMap[i][j]);
@@ -73,7 +72,7 @@ public class Labyrinth {
 			System.out.println();
 		}
 	}
-	
+
 	public static void drawStepIntoMap(char[][] labyrinthMap, char currentDirection, int[] currentPosition) {
 		int columnPosition = currentPosition[0];
 		int rowPosition = currentPosition[1];
@@ -93,13 +92,13 @@ public class Labyrinth {
 		boolean isWallFront = false;
 
 		int sleepingTime = 500;
-		
+
 		// Counted steps of BB8 in the labyrinth
 		int countedSteps = 0;
-		
-		
+
+
 		drawLabyrinth(labyrinth);
-		
+
 		while (isExit == false) {
 
 			isWallRight = checkIfWallRight(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
@@ -125,11 +124,11 @@ public class Labyrinth {
 
 				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 						SIGN_PATH, currentPosition, currentDirection);
-				
+
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-				
+
 				countedSteps++;
-				
+
 
 				drawLabyrinth(labyrinth);
 
@@ -141,9 +140,9 @@ public class Labyrinth {
 
 				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 						SIGN_PATH, currentPosition, currentDirection);
-				
+
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-				
+
 				countedSteps++;
 
 				drawLabyrinth(labyrinth);
@@ -166,9 +165,9 @@ public class Labyrinth {
 
 					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 							SIGN_PATH, currentPosition, currentDirection);
-					
+
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-					
+
 					countedSteps++;
 
 					drawLabyrinth(labyrinth);
@@ -179,9 +178,9 @@ public class Labyrinth {
 
 					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
 							SIGN_PATH, currentPosition, currentDirection);
-					
+
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
-					
+
 					countedSteps++;
 
 					drawLabyrinth(labyrinth);
@@ -215,14 +214,14 @@ public class Labyrinth {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
-	
+
 
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
 
 			labyrinth[bb8PositionColumn][bb8PositionRow + 1] = BB8_DIRECTION_RIGHT;
 			labyrinth[bb8PositionColumn][bb8PositionRow] = SIGN_PATH;
 
-			
+
 			bb8Position[1] = bb8PositionRow + 1;
 
 		} else if (currentDirection == BB8_DIRECTION_LEFT) {
