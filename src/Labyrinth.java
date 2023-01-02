@@ -1,5 +1,12 @@
 import de.hsrm.mi.prog.util.StaticScanner;
 
+
+
+
+/* Zweites Stegreifprojekt: "BB-8 lost in Labyrinth"
+   Implementiert von Mykhailo Fakliier, Fouad Ahsayni und Artur Konkel	
+*/
+
 public class Labyrinth {
 	public static void main(String[] args) throws InterruptedException {
 
