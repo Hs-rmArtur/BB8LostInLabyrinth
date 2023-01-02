@@ -19,11 +19,15 @@ public class Labyrinth {
 		char[][] labyrinthMap = null;
 
 		boolean userInputCorrect = false;
-
+		
+		
+		//Beginning the adventure with a story
+		playStartStory();
+		
 		// Asking the user to choose a labyrinth 
 		while (userInputCorrect == false) {
 
-			System.out.println("Which labyrinth should choose the BB-8 ('e'asy/'m'edium/'h'ard)?");
+			System.out.println("How hard should it be, to get through the spacecrafts labyrinth for BB-8 ('e'asy/'m'edium/'h'ard)?");
 
 			char userInput = StaticScanner.nextChar();
 
@@ -47,7 +51,7 @@ public class Labyrinth {
 				break;
 			}
 			default:
-				System.out.println("Input is not valid. Please choose again.");
+				System.out.println("Your input is not valid. Please choose again.");
 			}
 		}
 
@@ -61,6 +65,59 @@ public class Labyrinth {
 		// Sending BB8 through the labyrinth chosen by the user
 		findWayThroughLabyrinth(labyrinth, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position);
+	}
+	
+	
+	public static void playStartStory() throws InterruptedException {
+		int sleepingTime = 5000;
+		
+		System.out.println("A long time ago in a galaxy far, far away...");
+		Thread.sleep(sleepingTime / 2);
+		System.out.println("R2-D2 was kidnapped by an enemies spaceship and brought deep into there occupied territory.");
+		Thread.sleep(sleepingTime);
+		System.out.println("Because R2-D2 was an important team member and one of our best friends we had to free him.");
+		Thread.sleep(sleepingTime);
+		System.out.println("But the mission was dangerous. It would be a suicide mission to just fly into the enemies territory.");
+		Thread.sleep(sleepingTime);
+		System.out.println("So we decide to carry out a stealth mission. And our only hope was R2-D2s best friend BB-8.");
+		Thread.sleep(sleepingTime);
+		System.out.println("He knows how to get into the enemies spaceship without getting detected by the radar.");
+		Thread.sleep(sleepingTime);
+		System.out.println("We gave him the coordinates where R2-D2 is held and a special programm to find his way through the spacecrafts labyrinths.");
+		Thread.sleep(sleepingTime);
+		System.out.println("With a little luck, he can free our friend and return safely to our carrier.");
+		Thread.sleep(sleepingTime);
+		System.out.println("But it's uppon you to decide, how hard it will be for BB-8 to find his friend... ");
+		Thread.sleep(sleepingTime);
+	}
+	
+	public static void playEndStory(char[][] labyrinthMap, int countedSteps) throws InterruptedException {
+		int sleepingTime = 3500;
+		System.out.println("Finally... BB-8 fought he would never get out this labyrinth.");
+		Thread.sleep(sleepingTime);
+		System.out.println("Now just a few corners and he gets where R2-D2 should be located...");
+		Thread.sleep(sleepingTime);
+		System.out.println("No signal...");
+		Thread.sleep(sleepingTime);
+		System.out.println("No signal...");
+		Thread.sleep(sleepingTime);
+		System.out.println("No signal...");
+		Thread.sleep(sleepingTime * 1,5);
+		
+		System.out.println("Our beamer is getting a request! Two robots want to be beamed on our ship!");
+		Thread.sleep(sleepingTime);
+		System.out.println("Cheering...");
+		Thread.sleep(sleepingTime);
+		System.out.println("R2-D2 are safely back, saved by his friend BB-8.");
+		Thread.sleep(sleepingTime);
+		System.out.println("It only took him " + countedSteps + " steps to find through this labyrinth.");
+		Thread.sleep(sleepingTime);
+		System.out.println("And also, to everyone's surprise, he got a map with his steps.");
+		Thread.sleep(sleepingTime);
+		drawLabyrinthMap(labyrinthMap);
+		Thread.sleep(sleepingTime);
+		System.out.println("BB-8 is happy.");
+		
 	}
 
 	// Building the map of BB-8's steps through the labyrinth
@@ -83,7 +140,8 @@ public class Labyrinth {
 
 	// Drawing and printing the map of BB-8's steps through the labyrinth to the console
 	public static void drawLabyrinthMap(char[][] labyrinthMap) {
-
+		
+		System.out.println();
 		for (int i = 0; i < labyrinthMap.length; i++) {
 			for (int j = 0; j < labyrinthMap[i].length; j++) {
 				System.out.print(labyrinthMap[i][j]);
@@ -224,10 +282,7 @@ public class Labyrinth {
 				}
 
 			} else {
-				System.out.println("BB-8 found his way out of the labyrinth!");
-				System.out.println("BB-8 made " + countedSteps + " steps");
-				System.out.println("The way of BB-8 through the labyrinth:");
-				drawLabyrinthMap(labyrinthMap);
+				playEndStory(labyrinthMap, countedSteps);
 			}
 
 		}
