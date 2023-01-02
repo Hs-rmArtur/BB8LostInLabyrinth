@@ -23,7 +23,7 @@ public class Labyrinth {
 		
 		//Beginning the adventure with a story
 		playStartStory();
-		m
+		
 		// Asking the user to choose a labyrinth 
 		while (userInputCorrect == false) {
 
