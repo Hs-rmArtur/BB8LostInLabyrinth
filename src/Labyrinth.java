@@ -4,30 +4,21 @@ import de.hsrm.mi.prog.util.StaticScanner;
    Implementiert von Mykhailo Fakliier, Fouad Ahsayni und Artur Konkel	
 */
 
-
-
 public class Labyrinth {
-	static final char BB8_DIRECTION_RIGHT = '>';
-	static	final char BB8_DIRECTION_LEFT = '<';
-	static	final char BB8_DIRECTION_UP = '^';
-	static	final char BB8_DIRECTION_DOWN = 'v';
-	static	final char SIGN_WALL = '.';
-	static	final char SIGN_PATH = ' ';
-	static	final char SIGN_EXIT = 'E';
-	static	final char SIGN_DARK_FORCE = 'D';
 
-	
+	// Global variables
+	static final char BB8_DIRECTION_RIGHT = '>';
+	static final char BB8_DIRECTION_LEFT = '<';
+	static final char BB8_DIRECTION_UP = '^';
+	static final char BB8_DIRECTION_DOWN = 'v';
+	static final char SIGN_WALL = '.';
+	static final char SIGN_PATH = ' ';
+	static final char SIGN_EXIT = 'E';
+	static final char SIGN_DARK_FORCE = 'D';
+
 	public static void main(String[] args) throws InterruptedException {
 
 		// Declaration of variables
-		final char BB8_DIRECTION_RIGHT = '>';
-		final char BB8_DIRECTION_LEFT = '<';
-		final char BB8_DIRECTION_UP = '^';
-		final char BB8_DIRECTION_DOWN = 'v';
-		final char SIGN_WALL = '.';
-		final char SIGN_PATH = ' ';
-		final char SIGN_EXIT = 'E';
-		final char SIGN_DARK_FORCE = 'D';
 
 		int[] bb8Position; // [0] = Column [1] = Row
 		char currentDirection = 0;
@@ -38,7 +29,7 @@ public class Labyrinth {
 		boolean userInputCorrect = false;
 
 		// Beginning the adventure with a story
-		 playStartStory();
+	//	playStartStory();
 
 		// Asking the user to choose a labyrinth
 		while (userInputCorrect == false) {
@@ -50,23 +41,23 @@ public class Labyrinth {
 
 			switch (userInput) {
 			case 'e': {
-				labyrinth = buildLabyrinthOne(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-				setDarkForce(labyrinth, 1, SIGN_PATH, SIGN_DARK_FORCE);
 				currentDirection = BB8_DIRECTION_RIGHT;
+				labyrinth = buildLabyrinthOne(currentDirection);
+				setDarkForce(labyrinth, 1);
 				userInputCorrect = true;
 				break;
 			}
 			case 'm': {
-				labyrinth = buildLabyrinthTwo(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_LEFT, SIGN_EXIT);
-				setDarkForce(labyrinth, 2, SIGN_PATH, SIGN_DARK_FORCE);
 				currentDirection = BB8_DIRECTION_LEFT;
+				labyrinth = buildLabyrinthTwo(currentDirection);
+				setDarkForce(labyrinth, 2);
 				userInputCorrect = true;
 				break;
 			}
 			case 'h': {
-				labyrinth = buildLabyrinthThree(SIGN_WALL, SIGN_PATH, BB8_DIRECTION_RIGHT, SIGN_EXIT);
-				setDarkForce(labyrinth, 4, SIGN_PATH, SIGN_DARK_FORCE);
 				currentDirection = BB8_DIRECTION_RIGHT;
+				labyrinth = buildLabyrinthThree(currentDirection);
+				setDarkForce(labyrinth, 4);
 				userInputCorrect = true;
 				break;
 			}
@@ -76,15 +67,13 @@ public class Labyrinth {
 		}
 
 		// Setting BB-8's starting position in the labyrinth chosen by the user
-		bb8Position = determineBB8startPosition(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-				BB8_DIRECTION_DOWN);
+		bb8Position = determineBB8startPosition(labyrinth);
 
 		// Map of BB-8's steps through the labyrinth
 		labyrinthMap = buildLabyrinthMap(labyrinth);
 
 		// Sending BB8 through the labyrinth chosen by the user
-		findWayThroughLabyrinth(labyrinth, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position, SIGN_DARK_FORCE);
+		findWayThroughLabyrinth(labyrinth, labyrinthMap, currentDirection, bb8Position);
 	}
 
 	public static void playStartStory() throws InterruptedException {
@@ -115,10 +104,11 @@ public class Labyrinth {
 		Thread.sleep(sleepingTime);
 	}
 
-	public static void playEndStory(char[][] labyrinthMap, int countedSteps, boolean hasFoundExit) throws InterruptedException {
+	public static void playEndStory(char[][] labyrinthMap, int countedSteps, boolean hasFoundExit)
+			throws InterruptedException {
 		int sleepingTime = 3500;
-		
-		if(hasFoundExit) {
+
+		if (hasFoundExit) {
 			System.out.println("Finally... BB-8 fought he would never get out this labyrinth.");
 			Thread.sleep(sleepingTime);
 			System.out.println("Now just a few corners and he gets where R2-D2 should be located...");
@@ -148,12 +138,10 @@ public class Labyrinth {
 			Thread.sleep(sleepingTime);
 			System.out.println("I think we lost him.");
 		}
-		
 
 	}
 
-	public static void setDarkForce(char[][] labyrinth, int amountOfDarkForces, final char SIGN_PATH,
-			final char SIGN_DARK_FORCE) {
+	public static void setDarkForce(char[][] labyrinth, int amountOfDarkForces) {
 		int ranPosColumn;
 		int ranPosRow;
 		char currentSign;
@@ -161,7 +149,7 @@ public class Labyrinth {
 
 		while (counter < amountOfDarkForces) {
 			ranPosColumn = getRandomPos(0, labyrinth.length - 1);
-			ranPosRow = getRandomPos(0, labyrinth[0].length - 1 );
+			ranPosRow = getRandomPos(0, labyrinth[0].length - 1);
 
 			currentSign = labyrinth[ranPosColumn][ranPosRow];
 
@@ -219,10 +207,8 @@ public class Labyrinth {
 	}
 
 	// Sending BB8 through the labyrinth chosen by the user
-	public static void findWayThroughLabyrinth(char[][] labyrinth, char[][] labyrinthMap,
-			final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP,
-			final char BB8_DIRECTION_DOWN, final char SIGN_PATH, final char SIGN_WALL, final char SIGN_EXIT,
-			char currentDirection, int[] currentPosition, final char SIGN_DARK_FORCE) throws InterruptedException {
+	public static void findWayThroughLabyrinth(char[][] labyrinth, char[][] labyrinthMap, char currentDirection,
+			int[] currentPosition) throws InterruptedException {
 
 		boolean isExit = false;
 		boolean isExitRight = false;
@@ -250,29 +236,23 @@ public class Labyrinth {
 		// or free paths.
 		while (isExit == false && isDarkForce == false) {
 
-			isWallRight = checkIfWallRight(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-					BB8_DIRECTION_DOWN, currentPosition, SIGN_WALL, currentDirection);
+			isWallRight = checkIfWallRight(labyrinth, currentPosition, currentDirection);
 
 			if (isWallRight) {
-				isWallFront = checkIfWallFront(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-						BB8_DIRECTION_DOWN, currentPosition, SIGN_WALL, currentDirection);
+				isWallFront = checkIfWallFront(labyrinth, currentPosition, currentDirection);
 			}
 
-			isExitRight = checkIfExit(labyrinth, SIGN_EXIT, currentPosition, currentDirection, BB8_DIRECTION_RIGHT,
-					BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, 'r');
+			isExitRight = checkIfExit(labyrinth, currentPosition, currentDirection, 'r');
 
 			if (!isExitRight) {
-				isExitFront = checkIfExit(labyrinth, SIGN_EXIT, currentPosition, currentDirection, BB8_DIRECTION_RIGHT,
-						BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN, 'f');
+				isExitFront = checkIfExit(labyrinth, currentPosition, currentDirection, 'f');
 			}
 
 			if (isExitRight) {
 
-				turnRight(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
-						currentPosition, currentDirection);
+				turnRight(labyrinth, currentPosition, currentDirection);
 
-				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
-						SIGN_PATH, currentPosition, currentDirection);
+				makeStep(labyrinth, currentPosition, currentDirection);
 
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -287,8 +267,7 @@ public class Labyrinth {
 
 			} else if (isExitFront) {
 
-				makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
-						SIGN_PATH, currentPosition, currentDirection);
+				makeStep(labyrinth, currentPosition, currentDirection);
 
 				drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -306,18 +285,15 @@ public class Labyrinth {
 
 				if (!isWallRight) {
 
-					currentDirection = turnRight(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-							BB8_DIRECTION_DOWN, currentPosition, currentDirection);
+					currentDirection = turnRight(labyrinth, currentPosition, currentDirection);
 
 					drawLabyrinth(labyrinth);
 
 					Thread.sleep(sleepingTime);
 
-					isDarkForce = checkIfDarkForce(labyrinth, SIGN_DARK_FORCE, currentPosition, currentDirection,
-							BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
+					isDarkForce = checkIfDarkForce(labyrinth, currentPosition, currentDirection);
 
-					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
-							SIGN_PATH, currentPosition, currentDirection);
+					makeStep(labyrinth, currentPosition, currentDirection);
 
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -329,11 +305,9 @@ public class Labyrinth {
 
 				} else if (isWallRight && !isWallFront) {
 
-					isDarkForce = checkIfDarkForce(labyrinth, SIGN_DARK_FORCE, currentPosition, currentDirection,
-							BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN);
-					
-					makeStep(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP, BB8_DIRECTION_DOWN,
-							SIGN_PATH, currentPosition, currentDirection);
+					isDarkForce = checkIfDarkForce(labyrinth, currentPosition, currentDirection);
+
+					makeStep(labyrinth, currentPosition, currentDirection);
 
 					drawStepIntoMap(labyrinthMap, currentDirection, currentPosition);
 
@@ -345,8 +319,7 @@ public class Labyrinth {
 
 				} else if (isWallRight && isWallFront) {
 
-					currentDirection = turnLeft(labyrinth, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
-							BB8_DIRECTION_DOWN, currentPosition, currentDirection);
+					currentDirection = turnLeft(labyrinth, currentPosition, currentDirection);
 
 					drawLabyrinth(labyrinth);
 
@@ -360,9 +333,8 @@ public class Labyrinth {
 		}
 
 		if (isDarkForce) {
-			System.out.println("BB-8 ran into a dark force");
 			playEndStory(labyrinthMap, countedSteps, false);
-			
+
 		}
 
 		if (isExit) {
@@ -371,12 +343,10 @@ public class Labyrinth {
 
 	}
 
-	public static boolean checkIfDarkForce(char[][] labyrinth, final char SIGN_DARK_FORCE, int[] currentPosition,
-			char currentDirection, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN) {
+	public static boolean checkIfDarkForce(char[][] labyrinth, int[] currentPosition, char currentDirection) {
 		int bb8PositionColumn = currentPosition[0];
 		int bb8PositionRow = currentPosition[1];
-		
+
 		boolean isDarkForce = false;
 
 		if (currentDirection == BB8_DIRECTION_RIGHT) {
@@ -403,9 +373,7 @@ public class Labyrinth {
 
 	// BB-8 making steps based on his current position (for example first turning
 	// right or left and then taking his step)
-	public static void makeStep(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, final char SIGN_PATH, int[] bb8Position,
-			char currentDirection) {
+	public static void makeStep(char[][] labyrinth, int[] bb8Position, char currentDirection) {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
@@ -443,8 +411,7 @@ public class Labyrinth {
 
 	// BB-8 turning left based on his current direction and the conditions given in
 	// the method findWayThroughLabyrinth
-	public static char turnLeft(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, char currentDirection) {
+	public static char turnLeft(char[][] labyrinth, int[] bb8Position, char currentDirection) {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
@@ -477,8 +444,7 @@ public class Labyrinth {
 
 	// BB-8 turning right based on his current direction and the conditions given in
 	// the method findWayThroughLabyrinth
-	public static char turnRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, int[] bb8Position, char currentDirection) {
+	public static char turnRight(char[][] labyrinth, int[] bb8Position, char currentDirection) {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
@@ -511,9 +477,7 @@ public class Labyrinth {
 
 	// BB-8 checking if there is a wall in front of him (based on his current
 	// position)
-	public static boolean checkIfWallFront(char[][] labyrinth, final char BB8_DIRECTION_RIGHT,
-			final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN,
-			int[] bb8Position, final char SIGN_WALL, char currentDirection) {
+	public static boolean checkIfWallFront(char[][] labyrinth, int[] bb8Position, char currentDirection) {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
@@ -541,9 +505,7 @@ public class Labyrinth {
 	}
 
 	// BB-8 checking if there is a wall right of him (based on his current position)
-	public static boolean checkIfWallRight(char[][] labyrinth, final char BB8_DIRECTION_RIGHT,
-			final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN,
-			int[] bb8Position, final char SIGN_WALL, char currentDirection) {
+	public static boolean checkIfWallRight(char[][] labyrinth, int[] bb8Position, char currentDirection) {
 
 		int bb8PositionColumn = bb8Position[0];
 		int bb8PositionRow = bb8Position[1];
@@ -572,9 +534,8 @@ public class Labyrinth {
 	}
 
 	// BB-8 checking if the exit is right or in front of him
-	public static boolean checkIfExit(char[][] labyrinth, final char SIGN_EXIT, int[] currentPosition,
-			char currentDirection, final char BB8_DIRECTION_RIGHT, final char BB8_DIRECTION_LEFT,
-			final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN, char checkingExitRightOrFront) {
+	public static boolean checkIfExit(char[][] labyrinth, int[] currentPosition, char currentDirection,
+			char checkingExitRightOrFront) {
 
 		// rightOrFront = 'r' for checking if the exit is right of BB8, else checking if
 		// the exit is in front of BB-8
@@ -639,8 +600,7 @@ public class Labyrinth {
 	 * of BB-8 has to be at the outer lines of the labyrinth. So we only search
 	 * there so we don't have to go through the whole labyrinth line by line.
 	 */
-	public static int[] determineBB8startPosition(char[][] labyrinth, final char BB8_DIRECTION_RIGHT,
-			final char BB8_DIRECTION_LEFT, final char BB8_DIRECTION_UP, final char BB8_DIRECTION_DOWN) {
+	public static int[] determineBB8startPosition(char[][] labyrinth) {
 
 		int[] BB8Position = new int[2];
 
@@ -718,8 +678,7 @@ public class Labyrinth {
 	}
 
 	// Building the first of the labyrinths the user can choose from
-	public static char[][] buildLabyrinthOne(final char SIGN_WALL, final char SIGN_PATH, final char BB8_START_DIRECTION,
-			final char SIGN_EXIT) {
+	public static char[][] buildLabyrinthOne(final char BB8_START_DIRECTION) {
 
 		char wall = SIGN_WALL;
 		char path = SIGN_PATH;
@@ -747,8 +706,7 @@ public class Labyrinth {
 	}
 
 	// Building the second of the labyrinths the user can choose from
-	public static char[][] buildLabyrinthTwo(final char SIGN_WALL, final char SIGN_PATH, final char BB8_START_DIRECTION,
-			final char SIGN_EXIT) {
+	public static char[][] buildLabyrinthTwo(final char BB8_START_DIRECTION) {
 
 		char wall = SIGN_WALL;
 		char path = SIGN_PATH;
@@ -776,8 +734,7 @@ public class Labyrinth {
 	}
 
 	// Building the third of the labyrinths the user can choose from
-	public static char[][] buildLabyrinthThree(final char SIGN_WALL, final char SIGN_PATH,
-			final char BB8_START_DIRECTION, final char SIGN_EXIT) {
+	public static char[][] buildLabyrinthThree(final char BB8_START_DIRECTION) {
 		char wall = SIGN_WALL;
 		char path = SIGN_PATH;
 
