@@ -1,14 +1,11 @@
 import de.hsrm.mi.prog.util.StaticScanner;
 
-<<<<<<< Updated upstream
-=======
 /* Zweites Stegreifprojekt: "BB-8 lost in Labyrinth"
    Implementiert von Mykhailo Fakliier, Fouad Ahsayni und Artur Konkel	
 */
 
 
 
->>>>>>> Stashed changes
 public class Labyrinth {
 	static final char BB8_DIRECTION_RIGHT = '>';
 	static	final char BB8_DIRECTION_LEFT = '<';
@@ -40,12 +37,6 @@ public class Labyrinth {
 
 		boolean userInputCorrect = false;
 
-<<<<<<< Updated upstream
-		// Asking the user to choose a labyrinth 
-		while (userInputCorrect == false) {
-
-			System.out.println("Which labyrinth should choose the BB-8 ('e'asy/'m'edium/'h'ard)?");
-=======
 		// Beginning the adventure with a story
 		 playStartStory();
 
@@ -54,7 +45,6 @@ public class Labyrinth {
 
 			System.out.println(
 					"How hard should it be, to get through the spacecrafts labyrinth for BB-8 ('e'asy/'m'edium/'h'ard)?");
->>>>>>> Stashed changes
 
 			char userInput = StaticScanner.nextChar();
 
@@ -96,8 +86,6 @@ public class Labyrinth {
 		findWayThroughLabyrinth(labyrinth, labyrinthMap, BB8_DIRECTION_RIGHT, BB8_DIRECTION_LEFT, BB8_DIRECTION_UP,
 				BB8_DIRECTION_DOWN, SIGN_PATH, SIGN_WALL, SIGN_EXIT, currentDirection, bb8Position, SIGN_DARK_FORCE);
 	}
-<<<<<<< Updated upstream
-=======
 
 	public static void playStartStory() throws InterruptedException {
 		int sleepingTime = 5000;
@@ -189,7 +177,6 @@ public class Labyrinth {
 	public static int getRandomPos(int min, int max) {
 		return (int) Math.round(Math.random() * (max - min) + min);
 	}
->>>>>>> Stashed changes
 
 	// Building the map of BB-8's steps through the labyrinth
 	public static char[][] buildLabyrinthMap(char[][] labyrinth) {
@@ -214,10 +201,7 @@ public class Labyrinth {
 	// console
 	public static void drawLabyrinthMap(char[][] labyrinthMap) {
 
-<<<<<<< Updated upstream
-=======
 		System.out.println();
->>>>>>> Stashed changes
 		for (int i = 0; i < labyrinthMap.length; i++) {
 			for (int j = 0; j < labyrinthMap[i].length; j++) {
 				System.out.print(labyrinthMap[i][j]);
@@ -370,14 +354,7 @@ public class Labyrinth {
 				}
 
 			} else {
-<<<<<<< Updated upstream
-				System.out.println("BB-8 found his way out of the labyrinth!");
-				System.out.println("BB-8 made " + countedSteps + " steps");
-				System.out.println("The way of BB-8 through the labyrinth:");
-				drawLabyrinthMap(labyrinthMap);
-=======
 				// playEndStory(labyrinthMap, countedSteps);
->>>>>>> Stashed changes
 			}
 
 		}
