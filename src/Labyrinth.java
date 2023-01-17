@@ -29,7 +29,7 @@ public class Labyrinth {
 		boolean userInputCorrect = false;
 
 		// Beginning the adventure with a story
-	//	playStartStory();
+		// playStartStory();
 
 		// Asking the user to choose a labyrinth
 		while (userInputCorrect == false) {
@@ -326,8 +326,6 @@ public class Labyrinth {
 					Thread.sleep(sleepingTime);
 				}
 
-			} else {
-				// playEndStory(labyrinthMap, countedSteps);
 			}
 
 		}
